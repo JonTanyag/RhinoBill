@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RhinoBill.Infrastructure\RhinoBill.Infrastructure.csproj" />
+    <ProjectReference Include="..\RhinoBill.Core\RhinoBill.Core.csproj" />
   </ItemGroup>
 
 </Project>
