@@ -16,7 +16,7 @@ public class GetCourseQueryHandler : IRequestHandler<GetCourseQuery, List<Course
     {
         try
         {
-            var results = await _courserService.GetCourses();
+            var results = await _courserService.GetCourses(cancellationToken);
             var courseDto = new List<CourseDto>();
 
             foreach (var item in results)

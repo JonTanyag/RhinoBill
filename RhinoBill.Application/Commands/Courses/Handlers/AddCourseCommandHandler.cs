@@ -27,7 +27,7 @@ public class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, AddCour
                 Credits = request.Course.Credits,
             };
             
-            await _courseService.AddCourse(course);
+            await _courseService.AddCourse(course, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Add_Course_LogInformation);
             return new AddCourseResponse(true, ApiMessage.Add_Course_LogInformation, 201);

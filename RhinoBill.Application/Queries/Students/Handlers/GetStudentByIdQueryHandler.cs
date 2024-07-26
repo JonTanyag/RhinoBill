@@ -14,7 +14,7 @@ public class GetStudentByIdQueryHandler : IRequestHandler<GetStudentByIdQuery, S
     }
     public async Task<StudentDto> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = await _studentService.GetStudentById(request.Id);
+        var result = await _studentService.GetStudentById(request.Id, cancellationToken);
 
         var student = new StudentDto
         {

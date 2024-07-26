@@ -17,7 +17,7 @@ public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand,
     {
         try
         {
-            await _studentService.DeleteStudent(request.StudentId);
+            await _studentService.DeleteStudent(request.StudentId, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Delete_Student_LogInformation);
             return new DeleteStudentResponse(true, ApiMessage.Delete_Student_LogInformation, 200);

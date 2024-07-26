@@ -19,7 +19,7 @@ public class DeleteApplicationCommandHandler : IRequestHandler<DeleteApplication
     {
         try
         {
-            await _applicationService.DeleteApplication(request.Id);
+            await _applicationService.DeleteApplication(request.Id, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Delete_Application_LogInformation);
             return new DeleteApplicationResponse(true, ApiMessage.Delete_Application_LogInformation, 201);

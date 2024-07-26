@@ -4,9 +4,9 @@ namespace RhinoBill.Application;
 
 public interface ICourseService
 {
-    Task AddCourse(Course course);   
-    Task UpdateCourse(Course course);   
-    Task DeleteCourse(int id);   
-    Task<IEnumerable<Course>> GetCourses();   
-    Task<Course> GetCourseById(int id);  
+    Task AddCourse(Course course, CancellationToken cancellationToken);   
+    Task UpdateCourse(Course course, CancellationToken cancellationToken);   
+    Task DeleteCourse(int id, CancellationToken cancellationToken);   
+    Task<IEnumerable<Course>> GetCourses(CancellationToken cancellationToken);   
+    Task<Course> GetCourseById(int id, CancellationToken cancellationToken);  
 }

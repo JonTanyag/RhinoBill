@@ -27,7 +27,7 @@ public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand,
                 PhoneNumber = request.Student.PhoneNumber,
             };
 
-            await _studentService.UpdateStudent(student);
+            await _studentService.UpdateStudent(student, cancellationToken);
 
              _logger.LogInformation(ApiMessage.Update_Student_LogInformation);
             return new UpdateStudentResponse(true, ApiMessage.Update_Student_LogInformation, 200);

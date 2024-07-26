@@ -17,7 +17,7 @@ public class GetApplicationQueryHandler : IRequestHandler<GetApplicationQuery, L
     {
         try
         {
-            var results = await _applicationService.GetApplications();
+            var results = await _applicationService.GetApplications(cancellationToken);
             var applicationDto =  new List<ApplicationDto>();
 
             foreach (var result in results)

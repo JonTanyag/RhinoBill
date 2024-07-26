@@ -16,7 +16,7 @@ public class GetCourseByIdQueryHandler : IRequestHandler<GetCourseByIdQuery, Cou
     {
         try
         {
-            var result = await _courserService.GetCourseById(request.Id);
+            var result = await _courserService.GetCourseById(request.Id, cancellationToken);
 
             var courseDto = new CourseDto
             {

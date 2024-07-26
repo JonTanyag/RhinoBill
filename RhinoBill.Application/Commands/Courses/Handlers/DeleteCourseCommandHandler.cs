@@ -18,7 +18,7 @@ public class DeleteCourseCommandHandler : IRequestHandler<DeleteCourseCommand, D
     {
         try
         {
-            await _courseService.DeleteCourse(request.Id);
+            await _courseService.DeleteCourse(request.Id, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Delete_Course_LogInformation);
             return new DeleteCourseResponse(true, ApiMessage.Delete_Course_LogInformation, 201);

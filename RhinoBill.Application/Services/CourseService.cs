@@ -11,26 +11,26 @@ public class CourseService : ICourseService
         _context = context;
     }
 
-    public async Task AddCourse(Course course)
+    public async Task AddCourse(Course course, CancellationToken cancellationToken)
     {
-        _context.Courses.Add(course);
+        await _context.Courses.AddAsync(course, cancellationToken);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateCourse(Course course)
+    public async Task UpdateCourse(Course course, CancellationToken cancellationToken)
     {
-        var result = _context.Students.FirstOrDefault(x => x.Id == course.Id);
+        var result = _context.Courses.FirstOrDefault(x => x.Id == course.Id);
 
         if (result is null)
             throw new Exception("Course not found.");
 
-        _context.Students.Update(result);
+        _context.Courses.Update(result);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Course> GetCourseById(int id)
+    public async Task<Course> GetCourseById(int id, CancellationToken cancellationToken)
     {
         var course = _context.Courses.FirstOrDefault(x => x.Id == id);
         if (course is null)
@@ -39,14 +39,14 @@ public class CourseService : ICourseService
         return course;
     }
 
-    public async Task<IEnumerable<Course>> GetCourses()
+    public async Task<IEnumerable<Course>> GetCourses(CancellationToken cancellationToken)
     {
         return _context.Courses;
     }
     
-    public async Task DeleteCourse(int id)
+    public async Task DeleteCourse(int id, CancellationToken cancellationToken)
     {
-        var course = _context.Courses.FirstOrDefault(x => x.Id == id);
+        var course = await _context.Courses.FindAsync(id);
 
         if (course is null)
             throw new Exception("Course not found.");
@@ -54,6 +54,6 @@ public class CourseService : ICourseService
         if (course != null)
             _context.Courses.Remove(course);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

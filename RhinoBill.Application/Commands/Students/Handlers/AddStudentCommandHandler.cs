@@ -28,7 +28,7 @@ public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddSt
                 PhoneNumber = request.Student.PhoneNumber,
             };
 
-            await _studentService.AddStudent(student);
+            await _studentService.AddStudent(student, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Add_Student_LogInformation);
             return new AddStudentResponse(true, ApiMessage.Add_Student_LogInformation, 200);

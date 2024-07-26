@@ -27,7 +27,7 @@ public class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand, U
                 Credits = request.Course.Credits,
             };
             
-            await _courseService.UpdateCourse(course);
+            await _courseService.UpdateCourse(course,cancellationToken);
 
             _logger.LogInformation(ApiMessage.Add_Course_LogInformation);
             return new UpdateCourseResponse(true, ApiMessage.Add_Course_LogInformation, 201);

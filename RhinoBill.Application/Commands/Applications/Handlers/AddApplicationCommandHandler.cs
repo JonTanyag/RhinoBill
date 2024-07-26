@@ -27,7 +27,7 @@ public class AddApplicationCommandHandler : IRequestHandler<AddApplicationComman
                 ApplicationDate = request.Application.ApplicationDate,
             };
             
-            await _applicationService.AddApplication(application);
+            await _applicationService.AddApplication(application, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Add_Application_LogInformation);
             return new AddApplicationResponse(true, ApiMessage.Add_Application_LogInformation, 201);

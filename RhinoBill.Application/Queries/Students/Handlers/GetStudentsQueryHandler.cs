@@ -14,7 +14,7 @@ public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, List<St
     }
     public async Task<List<StudentDto>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
     {
-        var results = await _studentService.GetStudents();
+        var results = await _studentService.GetStudents(cancellationToken);
         var studentDto = new List<StudentDto>();
 
         foreach (var item in results)

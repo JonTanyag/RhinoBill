@@ -17,7 +17,7 @@ public class GetApplicationByIdQueryHandler : IRequestHandler<GetApplicationById
     {
         try
         {
-            var result = await _applicationService.GetApplicationsById(request.Id);
+            var result = await _applicationService.GetApplicationsById(request.Id, cancellationToken);
 
             var courseDto = new ApplicationDto
             {
@@ -33,7 +33,7 @@ public class GetApplicationByIdQueryHandler : IRequestHandler<GetApplicationById
         }
         catch (Exception ex)
         {
-            _logger.LogError("An error occurred while getting data. "+ ex.Message, ex);
+            _logger.LogError("An error occurred while getting data. " + ex.Message, ex);
             return new ApplicationDto();
         }
     }

@@ -13,36 +13,32 @@ public class ApplicationService : IApplicationService
         _context = context;
     }
     
-    public async Task AddApplication(Core.Application application)
+    public async Task AddApplication(Core.Application application, CancellationToken cancellationToken)
     {
-         _context.Applications.Add(application);
+        await _context.Applications.AddAsync(application, cancellationToken);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task UpdateApplication(Core.Application application)
+    public async Task UpdateApplication(Core.Application application, CancellationToken cancellationToken)
     {
-        var result = _context.Applications.FirstOrDefault(x => x.Id == application.Id);
-
-        if (result is null)
-            throw new Exception("Application not found.");
-
+        var result = await _context.Applications.FindAsync(application.Id) ?? throw new Exception("Application not found.");
         _context.Applications.Update(result);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<Core.Application>> GetApplications()
+    public async Task<IQueryable<Core.Application>> GetApplications(CancellationToken cancellationToken)
     {
-        return _context.Applications;
+        return  _context.Applications.Include(x => x.Students).Include(x => x.Courses);
     }
 
-    public async Task<Core.Application> GetApplicationsById(int id)
+    public async Task<Core.Application> GetApplicationsById(int id, CancellationToken cancellationToken)
     {
-         var application = _context.Applications
+         var application = await _context.Applications
                                     .Include(x => x.Students)
                                     .Include(x => x.Courses)
-                                    .FirstOrDefault(x => x.Id == id);
+                                    .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         if (application is null)
            return new Core.Application();
@@ -50,15 +46,15 @@ public class ApplicationService : IApplicationService
         return application;
     }
 
-    public async Task DeleteApplication(int id)
+    public async Task DeleteApplication(int id, CancellationToken cancellationToken)
     {
-        var application = _context.Applications.FirstOrDefault(x => x.Id == id);
+        var application = await _context.Applications.FindAsync(id);
 
         if (application is null)
             throw new Exception("Application not found.");
 
         _context.Applications.Remove(application);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

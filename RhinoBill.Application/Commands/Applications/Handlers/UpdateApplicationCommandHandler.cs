@@ -27,7 +27,7 @@ public class UpdateApplicationCommandHandler : IRequestHandler<UpdateApplication
                 ApplicationDate = request.Application.ApplicationDate,
             };
             
-            await _applicationService.UpdateApplication(application);
+            await _applicationService.UpdateApplication(application, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Update_Application_LogInformation);
             return new UpdateApplicationResponse(true, ApiMessage.Update_Application_LogInformation, 201);
