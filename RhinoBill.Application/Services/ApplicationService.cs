@@ -28,7 +28,7 @@ public class ApplicationService : IApplicationService
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<IQueryable<Core.Application>> GetApplications(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Core.Application>> GetApplications(CancellationToken cancellationToken)
     {
         return  _context.Applications.Include(x => x.Students).Include(x => x.Courses);
     }
@@ -36,10 +36,7 @@ public class ApplicationService : IApplicationService
     public async Task<Core.Application> GetApplicationsById(int id, CancellationToken cancellationToken)
     {
          var application = await _context.Applications
-                                    .Include(x => x.Students)
-                                    .Include(x => x.Courses)
-                                    .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
+                                    .FindAsync(id, cancellationToken);
         if (application is null)
            return new Core.Application();
         

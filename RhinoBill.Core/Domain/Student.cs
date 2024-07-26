@@ -1,4 +1,5 @@
-﻿namespace RhinoBill.Core;
+﻿
+namespace RhinoBill.Core;
 
 public class Student : BaseEntity
 {
@@ -10,4 +11,5 @@ public class Student : BaseEntity
 
     public ICollection<Application> Applications { get; set; }
     public ICollection<Course> Courses { get; set; }
+
 }
