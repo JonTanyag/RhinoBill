@@ -9,12 +9,8 @@
   <ItemGroup>
     <Folder Include="Commands/Applications/Handlers/" />
     <Folder Include="Commands/Applications/Response/" />
-    <Folder Include="Commands/Courses/Response/" />
     <Folder Include="Common/Validations/" />
-    <Folder Include="Queries/" />
     <Folder Include="Queries/Applications/" />
-    <Folder Include="Queries/Courses/" />
-    <Folder Include="Queries/Students/" />
   </ItemGroup>
 
   <ItemGroup>

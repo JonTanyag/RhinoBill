@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using RhinoBill.Application;
 
 namespace RhinoBill;
 
@@ -11,5 +12,19 @@ public class CourseController : Controller
     public CourseController(IMediator mediatr)
     {
         _mediatr = mediatr;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] AddCourseCommand command)
+    {
+        var response = await _mediatr.Send(command);
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var response = await _mediatr.Send(new GetCourseQuery());
+        return Ok(response);
     }
 }

@@ -19,4 +19,11 @@ public class StudentController : Controller
         var response = await _mediatr.Send(command);
         return Ok(response);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        var response = await _mediatr.Send(new GetStudentsQuery());
+        return Ok(response);
+    }
 }

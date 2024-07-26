@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RhinoBill.Application;
+using RhinoBill.Core;
+using RhinoBill.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,14 +17,28 @@ builder.Services.AddMediatR(typeof(AddStudentCommand).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(UpdateStudentCommand).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(DeleteStudentCommand).GetTypeInfo().Assembly);
 
-// validators
+builder.Services.AddMediatR(typeof(AddCourseCommand).GetTypeInfo().Assembly);
 
+builder.Services.AddMediatR(typeof(GetStudentsQuery).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(GetStudentsQuery).GetTypeInfo().Assembly);
 
+// Validators
+
+builder.Services.AddDbContext<RhinoBillDbContext>(options =>
+                options.UseInMemoryDatabase("RhinoBillDb"));
+
+// Services
+builder.Services.AddTransient<IStudentService, StudentService>();
+builder.Services.AddTransient<ICourseService, CourseService>();
+builder.Services.AddTransient<IApplicationService, ApplicationService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
 
 var app = builder.Build();
 
