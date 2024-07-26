@@ -27,7 +27,7 @@ public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddSt
                 Email = request.Student.Email,
                 PhoneNumber = request.Student.PhoneNumber,
             };
-            
+
             await _studentService.AddStudent(student);
 
             _logger.LogInformation(ApiMessage.Add_Student_LogInformation);
@@ -35,7 +35,7 @@ public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddSt
         }
         catch (Exception ex)
         {
-            _logger.LogError(ApiMessage.Add_Student_LogError, $"{ex.Message} - {ex.InnerException}");
+            _logger.LogError(ApiMessage.Add_Student_LogError + $"{ex.Message} - {ex.InnerException}");
             return new AddStudentResponse(false, ex.Message, 500);
         }
     }

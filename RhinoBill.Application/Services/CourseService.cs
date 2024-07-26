@@ -20,12 +20,23 @@ public class CourseService : ICourseService
 
     public async Task UpdateCourse(Course course)
     {
-        throw new NotImplementedException();
+        var result = _context.Students.FirstOrDefault(x => x.Id == course.Id);
+
+        if (result is null)
+            throw new Exception("Course not found.");
+
+        _context.Students.Update(result);
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task<Course> GetCourseById(int id)
     {
-        throw new NotImplementedException();
+        var course = _context.Courses.FirstOrDefault(x => x.Id == id);
+        if (course is null)
+           return new Course();
+        
+        return course;
     }
 
     public async Task<IEnumerable<Course>> GetCourses()
@@ -35,6 +46,14 @@ public class CourseService : ICourseService
     
     public async Task DeleteCourse(int id)
     {
-        throw new NotImplementedException();
+        var course = _context.Courses.FirstOrDefault(x => x.Id == id);
+
+        if (course is null)
+            throw new Exception("Course not found.");
+
+        if (course != null)
+            _context.Courses.Remove(course);
+
+        await _context.SaveChangesAsync();
     }
 }

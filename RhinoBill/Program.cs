@@ -18,12 +18,27 @@ builder.Services.AddMediatR(typeof(UpdateStudentCommand).GetTypeInfo().Assembly)
 builder.Services.AddMediatR(typeof(DeleteStudentCommand).GetTypeInfo().Assembly);
 
 builder.Services.AddMediatR(typeof(AddCourseCommand).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(UpdateCourseCommand).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(DeleteCourseCommand).GetTypeInfo().Assembly);
+
+
+builder.Services.AddMediatR(typeof(AddApplicationCommand).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(UpdateApplicationCommand).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(DeleteApplicationCommand).GetTypeInfo().Assembly);
 
 builder.Services.AddMediatR(typeof(GetStudentsQuery).GetTypeInfo().Assembly);
-builder.Services.AddMediatR(typeof(GetStudentsQuery).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(GetStudentByIdQuery).GetTypeInfo().Assembly);
+
+builder.Services.AddMediatR(typeof(GetCourseQuery).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(GetCourseByIdQuery).GetTypeInfo().Assembly);
+
+builder.Services.AddMediatR(typeof(GetApplicationQuery).GetTypeInfo().Assembly);
+builder.Services.AddMediatR(typeof(GetApplicationByIdQuery).GetTypeInfo().Assembly);
 
 // Validators
 
+
+// DbContext
 builder.Services.AddDbContext<RhinoBillDbContext>(options =>
                 options.UseInMemoryDatabase("RhinoBillDb"));
 

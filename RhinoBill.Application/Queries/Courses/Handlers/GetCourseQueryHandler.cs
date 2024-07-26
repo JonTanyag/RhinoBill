@@ -14,21 +14,29 @@ public class GetCourseQueryHandler : IRequestHandler<GetCourseQuery, List<Course
     }
     public async Task<List<CourseDto>> Handle(GetCourseQuery request, CancellationToken cancellationToken)
     {
-        var results = await _courserService.GetCourses();
-        var courseDto = new List<CourseDto>();
-
-        foreach (var item in results)
+        try
         {
-            var course = new CourseDto
-            {
-                Id = item.Id,
-                Code = item.Code,
-                Title = item.Title,
-                Credits = item.Credits,
-            };
-            courseDto.Add(course);
-        }
+            var results = await _courserService.GetCourses();
+            var courseDto = new List<CourseDto>();
 
-        return courseDto;
+            foreach (var item in results)
+            {
+                var course = new CourseDto
+                {
+                    Id = item.Id,
+                    Code = item.Code,
+                    Title = item.Title,
+                    Credits = item.Credits,
+                };
+                courseDto.Add(course);
+            }
+
+            return courseDto;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("An error occurred while getting data." + ex.Message, ex);
+            return new List<CourseDto>();
+        }
     }
 }

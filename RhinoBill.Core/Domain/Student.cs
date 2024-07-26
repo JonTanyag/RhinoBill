@@ -9,4 +9,5 @@ public class Student : BaseEntity
     public string PhoneNumber { get; set; }
 
     public ICollection<Application> Applications { get; set; }
+    public ICollection<Course> Courses { get; set; }
 }

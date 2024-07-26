@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands/Applications/Handlers/" />
-    <Folder Include="Commands/Applications/Response/" />
     <Folder Include="Common/Validations/" />
-    <Folder Include="Queries/Applications/" />
   </ItemGroup>
 
   <ItemGroup>

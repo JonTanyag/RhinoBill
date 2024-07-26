@@ -1,4 +1,5 @@
-﻿using RhinoBill.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using RhinoBill.Core;
 using RhinoBill.Infrastructure;
 
 namespace RhinoBill.Application;
@@ -33,7 +34,11 @@ public class StudentService : IStudentService
 
     public async Task<Student> GetStudentById(int id)
     {
-        return _context.Students.FirstOrDefault(x => x.Id == id);
+        var student = _context.Students.Include(x => x.Applications).FirstOrDefault(x => x.Id == id);
+        if (student is null)
+           return new Student();
+        
+        return student;
     }
 
     public async Task<IEnumerable<Student>> GetStudents()
