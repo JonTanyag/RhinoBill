@@ -22,8 +22,13 @@ public class ApplicationService : IApplicationService
 
     public async Task UpdateApplication(Core.Application application, CancellationToken cancellationToken)
     {
-        var result = await _context.Applications.FindAsync(application.Id) ?? throw new Exception("Application not found.");
-        _context.Applications.Update(result);
+        var existingApplication = await _context.Applications.FindAsync(application.Id);
+       
+       if (existingApplication is null)
+            throw new Exception("Course not found.");
+
+        
+        _context.Entry(existingApplication).CurrentValues.SetValues(application);
 
         await _context.SaveChangesAsync(cancellationToken);
     }

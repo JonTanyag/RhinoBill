@@ -8,10 +8,13 @@ public class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, AddCour
 {
     private readonly ILogger<AddCourseCommandHandler> _logger;
     private readonly ICourseService _courseService;
+    private readonly RandomGenerator _randomGenerator;
     public AddCourseCommandHandler(ICourseService courseService,
-        ILogger<AddCourseCommandHandler> logger)
+        ILogger<AddCourseCommandHandler> logger,
+        RandomGenerator randomGenerator)
     {
         _courseService = courseService;
+        _randomGenerator = randomGenerator;
         _logger = logger;
     }
 
@@ -21,7 +24,7 @@ public class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, AddCour
         {
             var course = new Course
             {
-                Id = request.Course.Id,
+                Id = _randomGenerator.GenerateId(),
                 Code = request.Course.Code,
                 Title = request.Course.Title,
                 Credits = request.Course.Credits,

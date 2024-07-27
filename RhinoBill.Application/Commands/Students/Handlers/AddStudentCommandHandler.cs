@@ -8,9 +8,13 @@ public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddSt
 {
     private readonly ILogger<AddStudentCommandHandler> _logger;
     private readonly IStudentService _studentService;
-    public AddStudentCommandHandler(IStudentService studentService, ILogger<AddStudentCommandHandler> logger)
+    private readonly RandomGenerator _randomGenerator;
+    public AddStudentCommandHandler(IStudentService studentService, 
+        ILogger<AddStudentCommandHandler> logger,
+        RandomGenerator randomGenerator)
     {
         _studentService = studentService;
+        _randomGenerator = randomGenerator;
         _logger = logger;
     }
 
@@ -18,9 +22,10 @@ public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddSt
     {
         try
         {
+            _logger.LogInformation("Student payload: "+ request);
             var student = new Student
             {
-                Id = request.Student.Id,
+                Id = _randomGenerator.GenerateId(), //request.Student.Id,
                 FirstName = request.Student.FirstName,
                 LastName = request.Student.LastName,
                 Birthday = request.Student.Birthday,

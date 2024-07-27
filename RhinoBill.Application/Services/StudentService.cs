@@ -16,18 +16,17 @@ public class StudentService : IStudentService
     public async Task AddStudent(Student student, CancellationToken cancellationToken)
     {
         await _context.Students.AddAsync(student, cancellationToken);
-
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateStudent(Student student, CancellationToken cancellationToken)
     {
-        var result = _context.Students.FirstOrDefault(x => x.Id == student.Id);
+        var existingStudent = await _context.Students.FindAsync(student.Id);
 
-        if (student is null)
+        if (existingStudent is null)
             throw new Exception("Student not found.");
 
-        _context.Students.Update(student);
+        _context.Entry(existingStudent).CurrentValues.SetValues(student);
 
         await _context.SaveChangesAsync(cancellationToken);
     }
@@ -36,14 +35,14 @@ public class StudentService : IStudentService
     {
         var student = _context.Students.Include(x => x.Applications).FirstOrDefault(x => x.Id == id);
         if (student is null)
-           return new Student();
-        
+            return new Student();
+
         return student;
     }
 
     public async Task<IEnumerable<Student>> GetStudents(CancellationToken cancellationToken)
     {
-       return _context.Students.ToList();
+        return _context.Students.ToList();
     }
 
     public async Task DeleteStudent(int id, CancellationToken cancellationToken)

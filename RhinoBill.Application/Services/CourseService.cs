@@ -20,12 +20,13 @@ public class CourseService : ICourseService
 
     public async Task UpdateCourse(Course course, CancellationToken cancellationToken)
     {
-        var result = await _context.Courses.FindAsync(course.Id);
+        var existingCourse = await _context.Courses.FindAsync(course.Id);
 
-        if (result is null)
+        if (existingCourse is null)
             throw new Exception("Course not found.");
 
-        _context.Courses.Update(result);
+        
+        _context.Entry(existingCourse).CurrentValues.SetValues(course);
 
         await _context.SaveChangesAsync(cancellationToken);
     }

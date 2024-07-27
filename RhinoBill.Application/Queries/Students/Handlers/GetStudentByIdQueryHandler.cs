@@ -24,12 +24,7 @@ public class GetStudentByIdQueryHandler : IRequestHandler<GetStudentByIdQuery, S
             Birthday = result.Birthday,
             Email = result.Email,
             PhoneNumber = result.PhoneNumber,
-            Courses = result.Courses.Select(x => new CourseDto{
-                Id = x.Id,
-                Title = x.Title,
-                Code = x.Code,
-                Credits = x.Credits,
-            }).ToList()
+            
         };
         return student;
     }

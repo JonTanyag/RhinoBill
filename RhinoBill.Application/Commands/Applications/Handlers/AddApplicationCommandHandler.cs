@@ -8,10 +8,13 @@ public class AddApplicationCommandHandler : IRequestHandler<AddApplicationComman
 {
     private readonly ILogger<AddApplicationCommandHandler> _logger;
     private readonly IApplicationService _applicationService;
+    private readonly RandomGenerator _randomGenerator;
     public AddApplicationCommandHandler(IApplicationService applicationService,
-        ILogger<AddApplicationCommandHandler> logger)
+        ILogger<AddApplicationCommandHandler> logger,
+        RandomGenerator randomGenerator)
     {
         _applicationService = applicationService;
+        _randomGenerator = randomGenerator;
         _logger = logger;
     }
 
@@ -21,7 +24,7 @@ public class AddApplicationCommandHandler : IRequestHandler<AddApplicationComman
         {
             var application = new Core.Application
             {
-                Id = request.Application.Id,
+                Id = _randomGenerator.GenerateId(),
                 StudentId = request.Application.StudentId,
                 CourseId = request.Application.CourseId,
                 ApplicationDate = request.Application.ApplicationDate,

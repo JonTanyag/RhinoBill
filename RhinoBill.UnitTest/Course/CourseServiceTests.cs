@@ -74,9 +74,9 @@ public class CourseServiceTests
         var course = new Course { Id = 1, Code = "CS101", Title = "Computer Science", Credits = 3 };
         _mockDbSet.Setup(m => m.FindAsync(1)).ReturnsAsync(course);
         
-        await _courseService.UpdateCourse(course, It.IsAny<CancellationToken>());
+        await _courseService.UpdateCourse(It.IsAny<Course>(), It.IsAny<CancellationToken>());
 
-        _mockDbSet.Verify(m => m.Update(course), Times.Once);
+        _mockDbSet.Verify(m => m.Entry(course).CurrentValues.SetValues(It.IsAny<Course>()), Times.Once);
         _mockContext.Verify(c => c.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
