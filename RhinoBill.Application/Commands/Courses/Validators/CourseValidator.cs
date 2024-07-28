@@ -8,7 +8,7 @@ public class CourseValidator : AbstractValidator<CourseDto>
     {
         RuleFor(c => c.Title).NotEmpty().WithMessage("Title is required.")
                 .Length(5, 50).WithMessage("Title must be between 5 and 50 characters.")
-                .Matches(@"^[a-zA-Z0-9\s\p{P}]$").WithMessage("Title must be alphanumeric and/or contain special characters only.");
+                .Matches(@"^[a-zA-Z0-9\s\p{P}]+$").WithMessage("Title must be alphanumeric and/or contain special characters only.");
 
         RuleFor(c => c.Code).NotEmpty().WithMessage("Code is required.")
             .Length(5, 10).WithMessage("Code must be between 5 and 10 characters.")
