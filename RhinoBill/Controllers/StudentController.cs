@@ -8,9 +8,11 @@ namespace RhinoBill;
 public class StudentController : Controller
 {
     private readonly IMediator _mediatr;
-    public StudentController(IMediator mediatr)
+    private readonly StudentValidator _validator;
+    public StudentController(IMediator mediatr, StudentValidator validator)
     {
         _mediatr = mediatr;
+        _validator = validator;
     }
 
     
@@ -31,6 +33,10 @@ public class StudentController : Controller
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] AddStudentCommand command)
     {
+        var validationResult = await _validator.ValidateAsync(command.Student);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
         var response = await _mediatr.Send(command);
         return Ok(response);
     }
@@ -38,6 +44,10 @@ public class StudentController : Controller
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] UpdateStudentCommand command)
     {
+        var validationResult = await _validator.ValidateAsync(command.Student);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+            
         var response = await _mediatr.Send(command);
         return Ok(response);
     }

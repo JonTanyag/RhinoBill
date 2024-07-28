@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -46,7 +47,10 @@ builder.Services.AddMediatR(typeof(GetApplicationQuery).GetTypeInfo().Assembly);
 builder.Services.AddMediatR(typeof(GetApplicationByIdQuery).GetTypeInfo().Assembly);
 
 // Validators
-
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddScoped<StudentValidator>();
+builder.Services.AddScoped<CourseValidator>();
+builder.Services.AddScoped<ApplicationValidator>();
 
 // DbContext
 builder.Services.AddDbContext<RhinoBillDbContext>(options =>

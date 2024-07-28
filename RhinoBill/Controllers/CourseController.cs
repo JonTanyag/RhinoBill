@@ -8,15 +8,20 @@ namespace RhinoBill;
 public class CourseController : Controller
 {
     private readonly IMediator _mediatr;
-
-    public CourseController(IMediator mediatr)
+    private readonly CourseValidator _validator;
+    public CourseController(IMediator mediatr, CourseValidator validator)
     {
         _mediatr = mediatr;
+        _validator = validator;
     }
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] AddCourseCommand command)
     {
+        var validationResult = await _validator.ValidateAsync(command.Course);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+
         var response = await _mediatr.Send(command);
         return Ok(response);
     }
@@ -38,6 +43,10 @@ public class CourseController : Controller
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] UpdateCourseCommand command)
     {
+        var validationResult = await _validator.ValidateAsync(command.Course);
+        if (!validationResult.IsValid)
+            return BadRequest(validationResult.Errors);
+        
         var response = await _mediatr.Send(command);
         return Ok(response);
     }
