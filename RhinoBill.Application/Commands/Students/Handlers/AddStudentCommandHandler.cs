@@ -32,7 +32,7 @@ public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddSt
                 Email = request.Student.Email,
                 PhoneNumber = request.Student.PhoneNumber,
             };
-
+            
             await _studentService.AddStudent(student, cancellationToken);
 
             _logger.LogInformation(ApiMessage.Add_Student_LogInformation);

@@ -14,7 +14,6 @@ public class CourseService : ICourseService
     public async Task AddCourse(Course course, CancellationToken cancellationToken)
     {
         await _context.Courses.AddAsync(course, cancellationToken);
-
         await _context.SaveChangesAsync(cancellationToken);
     }
 
@@ -25,7 +24,6 @@ public class CourseService : ICourseService
         if (existingCourse is null)
             throw new Exception("Course not found.");
 
-        
         _context.Entry(existingCourse).CurrentValues.SetValues(course);
 
         await _context.SaveChangesAsync(cancellationToken);

@@ -20,6 +20,7 @@ public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand,
         {
             var student = new Student
             {
+                Id = request.Student.Id,
                 FirstName = request.Student.FirstName,
                 LastName = request.Student.LastName,
                 Email = request.Student.Email,
@@ -29,7 +30,7 @@ public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand,
 
             await _studentService.UpdateStudent(student, cancellationToken);
 
-             _logger.LogInformation(ApiMessage.Update_Student_LogInformation);
+            _logger.LogInformation(ApiMessage.Update_Student_LogInformation);
             return new UpdateStudentResponse(true, ApiMessage.Update_Student_LogInformation, 200);
         }
         catch (Exception ex)

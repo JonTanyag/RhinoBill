@@ -16,7 +16,7 @@ public class StudentService : IStudentService
     public async Task AddStudent(Student student, CancellationToken cancellationToken)
     {
         await _context.Students.AddAsync(student, cancellationToken);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdateStudent(Student student, CancellationToken cancellationToken)
@@ -24,8 +24,8 @@ public class StudentService : IStudentService
         var existingStudent = await _context.Students.FindAsync(student.Id);
 
         if (existingStudent is null)
-            throw new Exception("Student not found.");
-
+            throw new Exception("Student not founds.");
+        
         _context.Entry(existingStudent).CurrentValues.SetValues(student);
 
         await _context.SaveChangesAsync(cancellationToken);

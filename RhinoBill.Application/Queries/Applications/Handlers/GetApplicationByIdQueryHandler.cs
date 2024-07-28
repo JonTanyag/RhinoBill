@@ -23,7 +23,7 @@ public class GetApplicationByIdQueryHandler : IRequestHandler<GetApplicationById
             {
                 Id = result.Id,
                 StudentId = result.StudentId,
-                StudentName = result.Students.FirstName + " " + result.Students.LastName,
+                StudentName =  result.Students.FirstName + " " + result.Students.LastName,
                 CourseId = result.CourseId,
                 Course = result.Courses.Title,
                 ApplicationDate = result.ApplicationDate,

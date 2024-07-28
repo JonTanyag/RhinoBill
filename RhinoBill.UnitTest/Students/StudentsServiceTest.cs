@@ -86,13 +86,13 @@ public class StudentsServiceTest
     {
         // Arrange
         var studentToUpdate = new Student { Id = 1, FirstName = "Jane", LastName = "Doe" };
-        _mockDbSet.Setup(m => m.FindAsync(1)).ReturnsAsync(studentToUpdate);
+        // _mockDbSet.Setup(m => m.FindAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(studentToUpdate);
         
         // Act
         await _studentService.UpdateStudent(studentToUpdate, It.IsAny<CancellationToken>());
 
         // Assert
-        _mockDbSet.Verify(dbSet => dbSet.Entry(studentToUpdate).CurrentValues.SetValues(It.IsAny<Student>()), Times.Never); // Ensure Update is not called directly
+        _mockDbSet.Verify(dbSet => dbSet.Update(studentToUpdate), Times.Never); // Ensure Update is not called directly
         _mockContext.Verify(ctx => ctx.SaveChangesAsync(default), Times.Once); // Ensure SaveChangesAsync is called
     }
 
