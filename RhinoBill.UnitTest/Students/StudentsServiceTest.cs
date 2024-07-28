@@ -12,7 +12,7 @@ public class StudentsServiceTest
 {
     private Mock<RhinoBillDbContext> _mockContext;
     private Mock<DbSet<Student>> _mockDbSet;
-    private IStudentService _studentService;
+    private IStudentService _mockStudentService;
 
     [SetUp]
     public void Setup()
@@ -32,13 +32,13 @@ public class StudentsServiceTest
         _mockDbSet.As<IQueryable<Student>>().Setup(m => m.GetEnumerator()).Returns(students.GetEnumerator());
 
         _mockContext.Setup(c => c.Students).Returns(_mockDbSet.Object);
-        _studentService = new StudentService(_mockContext.Object);
+        _mockStudentService = new StudentService(_mockContext.Object);
     }
 
     [Test]
     public async Task GetStudents_ShouldReturnAllStudents()
     {
-        var result = await _studentService.GetStudents(It.IsAny<CancellationToken>());
+        var result = await _mockStudentService.GetStudents(It.IsAny<CancellationToken>());
 
         result.ShouldNotBe(null);
         result.Count().ShouldBe(2);
@@ -51,7 +51,7 @@ public class StudentsServiceTest
         var student = new Student { Id = 1, FirstName = "John", LastName = "Doe" };
         _mockDbSet.Setup(m => m.FindAsync(1)).ReturnsAsync(student);
 
-        var result = await _studentService.GetStudentById(1, It.IsAny<CancellationToken>());
+        var result = await _mockStudentService.GetStudentById(1, It.IsAny<CancellationToken>());
 
         result.ShouldNotBe(null);
         result.FirstName.ShouldBe("John");
@@ -62,38 +62,26 @@ public class StudentsServiceTest
     {
         var student = new Student { Id = 1, FirstName = "John", LastName = "Doe" };
 
-        await _studentService.AddStudent(student, It.IsAny<CancellationToken>());
+        await _mockStudentService.AddStudent(student, It.IsAny<CancellationToken>());
 
         _mockDbSet.Verify(m => m.AddAsync(student, default), Times.Once);
         _mockContext.Verify(c => c.SaveChangesAsync(default), Times.Once);
     }
-
-    // [Test]
-    // public async Task UpdateStudent_ShouldUpdateStudent()
-    // {
-    //     var student = new Student { Id = 1, FirstName = "John", LastName = "Doe" };
-        
-    //     _mockDbSet.Setup(m => m.FindAsync(1)).ReturnsAsync(student);
-
-    //     await _studentService.UpdateStudent(student, It.IsAny<CancellationToken>());
-
-    //     _mockDbSet.Verify(m => m.Update(student), Times.Once);
-    //     _mockContext.Verify(c => c.SaveChangesAsync(default), Times.Once);
-    // }
 
     [Test]
     public async Task UpdateStudentAsync_ShouldUpdateExistingStudent()
     {
         // Arrange
         var studentToUpdate = new Student { Id = 1, FirstName = "Jane", LastName = "Doe" };
-        // _mockDbSet.Setup(m => m.FindAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(studentToUpdate);
+        _mockDbSet.Setup(m => m.FindAsync(1)).ReturnsAsync(studentToUpdate);
         
         // Act
-        await _studentService.UpdateStudent(studentToUpdate, It.IsAny<CancellationToken>());
+        await _mockStudentService.UpdateStudent(studentToUpdate, CancellationToken.None);
 
         // Assert
-        _mockDbSet.Verify(dbSet => dbSet.Update(studentToUpdate), Times.Never); // Ensure Update is not called directly
-        _mockContext.Verify(ctx => ctx.SaveChangesAsync(default), Times.Once); // Ensure SaveChangesAsync is called
+        _mockDbSet.Verify(dbSet => dbSet.FindAsync(It.IsAny<int>()), Times.Once);
+        _mockDbSet.Verify(dbSet => dbSet.Entry(studentToUpdate).CurrentValues.SetValues(It.IsAny<Student>()), Times.Once);
+        _mockContext.Verify(ctx => ctx.SaveChangesAsync(default), Times.Once);
     }
 
     [Test]
@@ -104,7 +92,7 @@ public class StudentsServiceTest
         _mockDbSet.Setup(m => m.FindAsync(1)).ReturnsAsync(studentToUpdate);
 
         // Act & Assert
-        await Should.ThrowAsync<Exception>(() => _studentService.UpdateStudent(studentToUpdate, It.IsAny<CancellationToken>()));
+        await Should.ThrowAsync<Exception>(() => _mockStudentService.UpdateStudent(studentToUpdate, It.IsAny<CancellationToken>()));
     }
 
     [Test]
@@ -116,7 +104,7 @@ public class StudentsServiceTest
         var cancellationToken = CancellationToken.None;
 
         // Act
-        await _studentService.DeleteStudent(student.Id, cancellationToken);
+        await _mockStudentService.DeleteStudent(student.Id, cancellationToken);
 
         // Assert
         _mockDbSet.Verify(m => m.Remove(student), Times.Once);
