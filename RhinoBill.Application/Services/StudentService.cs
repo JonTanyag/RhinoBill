@@ -26,7 +26,8 @@ public class StudentService : IStudentService
         if (existingStudent is null)
             throw new Exception("Student not founds.");
         
-        _context.Entry(existingStudent).CurrentValues.SetValues(student);
+        _context.Entry(existingStudent).State = EntityState.Detached;
+        _context.Students.Update(student);
 
         await _context.SaveChangesAsync(cancellationToken);
     }

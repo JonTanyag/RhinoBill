@@ -27,9 +27,8 @@ public class ApplicationService : IApplicationService
        if (existingApplication is null)
             throw new Exception("Course not found.");
             
-        // _context.Entry(existingApplication).State = EntityState.Detached;
-        _context.Entry(existingApplication).CurrentValues.SetValues(application);
-        // _context.Entry(existingApplication).State = EntityState.Modified;
+        _context.Entry(existingApplication).State = EntityState.Detached;
+        _context.Update(application);
 
         await _context.SaveChangesAsync(cancellationToken);
     }

@@ -1,4 +1,5 @@
-﻿using RhinoBill.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using RhinoBill.Core;
 using RhinoBill.Infrastructure;
 
 namespace RhinoBill.Application;
@@ -24,7 +25,8 @@ public class CourseService : ICourseService
         if (existingCourse is null)
             throw new Exception("Course not found.");
 
-        _context.Entry(existingCourse).CurrentValues.SetValues(course);
+        _context.Entry(existingCourse).State = EntityState.Detached;
+        _context.Courses.Update(course);
 
         await _context.SaveChangesAsync(cancellationToken);
     }
